@@ -1,0 +1,8 @@
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(391,5): warning MSB8028: 중간 디렉터리(Debug\)에 다른 프로젝트(Parser_ast.vcxproj)에서 공유하는 파일이 포함되어 있습니다.  이로 인해 잘못된 정리 및 다시 빌드 동작이 수행될 수 있습니다.
+  Parser_ast.c
+c:\users\영철\desktop\minic_compiler\minic_compiler\symtab.c(91): warning C4013: 'strcmp'이(가) 정의되지 않았습니다. extern은 int형을 반환하는 것으로 간주합니다.
+c:\users\영철\desktop\minic_compiler\minic_compiler\symtab.c(125): warning C4013: 'strcpy'이(가) 정의되지 않았습니다. extern은 int형을 반환하는 것으로 간주합니다.
+c:\users\영철\desktop\minic_compiler\minic_compiler\parser_ast.c(410): warning C4101: 'dcl_index' :참조되지 않은 지역 변수입니다.
+  Scanner.c
+  코드를 생성하고 있습니다...
+  MiniC_Compiler.vcxproj -> C:\Users\영철\Desktop\MiniC_Compiler\Debug\MiniC_Compiler.exe
