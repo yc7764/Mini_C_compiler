@@ -29,7 +29,7 @@ Mini C언어의 문법으로 작성된 코드를 중간언어인 Ucode를 사용
 ```sh
 id*id-&id
 ```
-- 구문 분석 과정
+구문 분석 과정
 | Step | Stack  | Input      | Action   | Parse Tree      | AST             |
 |------|--------|------------|----------|-----------------|-----------------|
 | 1    | $      | id*id-&id$ | Shift id | Build Node (id) | Build Node (id) |
