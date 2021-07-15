@@ -30,6 +30,26 @@ Mini C언어의 문법으로 작성된 코드를 중간언어인 Ucode를 사용
 id*id-&id
 ```
 - 구문 분석 과정
+| Step | Stack  | Input      | Action   | Parse Tree      | AST             |
+|------|--------|------------|----------|-----------------|-----------------|
+| 1    | $      | id*id-&id$ | Shift id | Build Node (id) | Build Node (id) |
+| 2    | $id    | *id-&id$   | Reduce 8 | Build Tree (8)  |                 |
+| 3    | $P     | *id-&id$   | Reduce 6 | Build Tree (6)  |                 |
+| 4    | $F     | *id-&id$   | Reduce 4 | Build Tree (4)  |                 |
+| 5    | $T     | *id-&id$   | Shift *  | Build Node (*)  |                 |
+| 6    | $T*    | id-&id$    | Shift id | Build Node (id) | Build Node (id) |
+| 7    | $T*id  | -&id$      | Reduce 8 | Build Tree (8)  |                 |
+| 8    | $T*P   | -&id$      | Reduce 6 | Build Tree (6)  |                 |
+| 9    | $T*F   | -&id$      | Reduce 3 | Build Tree (3)  | Build Tree (3)  |
+| 10   | $T     | -&id$      | Reduce 2 | Build Tree (2)  |                 |
+| 11   | $E     | -&id$      | Shift -  | Build Node (-)  |                 |
+| 12   | $E-    | &id$       | Shift &  | Build Node (&)  |                 |
+| 13   | $E-&   | id$        | Shift id | Build Node (id) | Build Node (id) |
+| 14   | $E-&id | $          | Reduce 8 | Build Tree (8)  |                 |
+| 15   | $E-&P  | $          | Reduce 5 | Build Tree (5)  | Build Tree (5)  |
+| 16   | $E-F   | $          | Reduce 4 | Build Tree (4)  |                 |
+| 17   | $E-T   | $          | Reduce 1 | Build Tree (1)  | Build Tree (1)  |
+| 18   | $E     | $          | accept   | Return Tree     | Return Tree     |
 - 파스트리  
 ![image](https://user-images.githubusercontent.com/59434021/125738564-fea9a488-47df-4f2f-9b04-a89be407aaa2.png)  
 - AST  
