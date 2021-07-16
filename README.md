@@ -56,3 +56,36 @@ id*id-&id
 ![image](https://user-images.githubusercontent.com/59434021/125738690-d156e72c-a3b1-4bff-a8ff-1d981db20965.png)  
 ### 3. 중간코드 생성기(Intermediate code generater)
 - 구문 분석기에서 생성된 AST의 root노드 부터 모든 노드를 순회하며 각 문장의 의미에 맞는 Ucode를 출력
+### 4. 생성된 중간코드 실행법
+ 1. Mini C 문법에 맞는 코드를 작성하여 입력 파일인 mc파일 생성하고 Debug 폴더의 MiniC_Compiler.exe와 ucodei.exe를 확인
+    -perfect.mc 파일 작성
+    ```sh
+    const int max = 500;
+    void main(){
+      int i, j, k;
+      int rem, sum;
+      i = 2;
+      while (i <= max){
+        sum = 0;
+        k = i / 2;
+        j = 1;
+        while (j <= k){
+          rem = i % j;
+          if(rem == 0) sum += j;
+          ++j;
+        }
+        if (i == sum) write(i);
+        ++i;
+      }
+    }
+    ```
+ 2. 실행창 실행 후 Debug 폴더에서 명령어 MiniC_Compiler “출력파일이름” < ”입력파일이름.mc” 실행
+    ```sh
+    MiniC_Compiler perfect < perfect.mc
+    ```
+ 4. 생성된 uco 파일을 확인한 후 명령어 ucodei 출력파일이름.uco out.lst 실행
+    ```sh
+    ucodei perfect.uco out.lst
+    ```
+    -실행결과  
+    ![image](https://user-images.githubusercontent.com/59434021/125977633-e4ba88b0-13e4-4cb1-a15f-02bb75eb21cb.png)
