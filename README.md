@@ -3,7 +3,9 @@
 Mini C언어의 문법으로 작성된 코드를 중간언어인 Ucode를 사용해 번역하여 중간코드를 생성한다. 생성된 중간코드는 Ucode interpreter를 사용하여 실행이 가능하다.  
 
 ## 프로그램 구성도
-프로그램은 크게 세가지 모듈로 작성되었으며, 어휘 분석기, 구문 분석기, 중간코드 생성기로 구성된다.
+프로그램은 크게 세가지 모듈로 작성되었으며, 어휘 분석기, 구문 분석기, 중간코드 생성기로 구성된다. scanner() 함수가 처음으로 호출되면 코드의 첫 토큰을 반환하게 되고, 이후 함수 호출 시에는 그 다음 토큰을 반환하여 첫 토큰부터 마지막 토큰까지 구분하게 된다. parser() 함수는 scanner()함수에서 반환된 토큰들을 구문 분석하여 토큰 별로 노드를 생성하고 트리를 구성하여 트리의 루트 노드를 반환한다. scanner() 함수를 반복하여 호출하며 마지막 토큰이 나올 떄까지 반복하게 된다. 구문 분석 시 MiniC.tbl 파일의 파싱 테이블을 이용하여 문법에 맞게 토큰들을 구분하고 구문 오류를 찾아낸다.
+마지막으로 codeGen() 함수를 호출하여 루트노드부터 모든 노드를 순회하면 Ucode를 생성하게 된다. 이때 필요한 심볼들의 이름과 데이터를 관리하기 위하여 SymTab.c 파일의 심볼 테이블을 사용하였다.
+변수 또는 함수의 선언인 노드에서는 심볼 테이블에 심볼의 정보를 저장하고, 변수의 사용 또는 함수 호출 시 심볼 테이블에서 해당 심볼의 데이터를 검색하여 사용한다.
 ### 1.어휘 분석기(Lexical analyzer)
 - 최소한의 의미를 가지는 단어를 토큰이라고 하며, 입력 코드를 토큰별로 나누는 모듈  
 - 만약 입력 코드가 아래와 같다면 if, (, a, >, 10, ) 총 6개의 토큰으로 나누어 진다.
@@ -56,6 +58,16 @@ id*id-&id
 ![image](https://user-images.githubusercontent.com/59434021/125738690-d156e72c-a3b1-4bff-a8ff-1d981db20965.png)  
 ### 3. 중간코드 생성기(Intermediate code generater)
 - 구문 분석기에서 생성된 AST의 root노드 부터 모든 노드를 순회하며 각 문장의 의미에 맞는 Ucode를 출력
+- Ucode
+  - Ucode 명령어는 아래와 같이 총 39개로 구성
+    - 단항 명령어 : notop, neg, inc, dec, dup
+    - 이항 명령어 : add, sub, mult, div, mod, swp, and, or, gt, lt, ge, le, eq, ne
+    - 스택 연산 명령어 : lod, str, ldc, lda
+    - 제어 흐름 명령어 : ujp, tjp, fjp
+    - 범위 체크 명령어 : chkh, chkl
+    - 주소 참조 명령어 : ldi(load indirect), sti(store indirect)
+    - 프로시저 명령어 : call, ret, retv, ldp, proc, end
+    - 기타 : nop, bgn, sym
 ### 4. 생성된 중간코드 실행법
  1. Mini C 문법에 맞는 코드를 작성하여 입력 파일인 mc파일 생성하고 Debug 폴더의 MiniC_Compiler.exe와 ucodei.exe를 확인
     -perfect.mc 파일 작성
@@ -83,7 +95,7 @@ id*id-&id
     ```sh
     MiniC_Compiler perfect < perfect.mc
     ```
- 4. 생성된 uco 파일을 확인한 후 명령어 ucodei 출력파일이름.uco out.lst 실행
+ 3. 생성된 uco 파일을 확인한 후 명령어 ucodei 출력파일이름.uco out.lst 실행
     ```sh
     ucodei perfect.uco out.lst
     ```
